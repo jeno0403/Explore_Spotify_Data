@@ -1,6 +1,6 @@
 ---
 title: "Exploration on NIKI's Music in Spotify"
-subtitle: "Using the Spotify API to "
+subtitle: "Using the Spotify API to investigate music data "
 author: 
 - Jinyan Wei
 - Maggie Zhang
@@ -17,8 +17,7 @@ bibliography: references.bib
 
 # Data tools
 
-The dataset was analyzed using R [@citeR] and downloaded using the R package, Tidyverse [@citeTidyverse], Knitr [@citeKnitr]. Data are extract from Ipums_usa [@ipumsusa].
-
+The dataset was analyzed using R [@citeR] and downloaded using the R package, Tidyverse [@citetidyverse], Knitr [@citeKnitr]. Data are extracted from Ipums USA [@ipumsusa]. Additional packages such as `here` [@citehere], `usethis` [@citeusethis], and `spotifyr` [@citespotifyr] were used.
 
 ```{r}
 #| include: false
@@ -33,7 +32,7 @@ options(scipen=999)
 #| include: false
 #| warning: false
 #| message: false
-NIKI  <- readRDS(here("data","00-raw_data", "niki.rds"))
+NIKI  <- readRDS("/Users/jennywei/Desktop/Spotify-Data-Analysis/Explore_Spotify_Data/data/00-raw_data/niki.rds")
 ```
 
 ```{r}
@@ -57,8 +56,3 @@ NIKI |>
     y = "Duration of song (ms)"
   )
 ```
-
-
-
-
-

@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Download and analyze audio features of NIKI's songs using Spotify API.
-# Author: Group 56
+# Author: Jinyan Wei, Maggie Zhang,Amy Jin,Diana Shen,Yiyue Deng,Clarie Chang 
 # Date: October 10, 2024
 # Contact: Group 56
 # License: MIT

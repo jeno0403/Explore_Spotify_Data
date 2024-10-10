@@ -17,7 +17,7 @@ bibliography: references.bib
 
 # Data tools
 
-The dataset was analyzed using R [@citeR] and downloaded using the R package, Tidyverse [@citetidyverse], Knitr [@citeKnitr]. Data are extracted from Ipums USA [@ipumsusa]. Additional packages such as `here` [@citehere], `usethis` [@citeusethis], and `spotifyr` [@citespotifyr] were used.
+The dataset was analyzed using R (@citeR) and downloaded using the R package, Tidyverse [@citetidyverse], Knitr (@citeKnitr). Ggplot(@citeggplot2) package was used to generate the graph. Data are extracted from Spotify Devlopers API (@citespotifyr). Additional packages such as `here` [@citehere], `usethis` [@citeusethis], and `spotifyr` [@citespotifyr] were used. Special thanks to (@alexander2023telling) for guidance and templates!
 
 ```{r}
 #| include: false
@@ -25,6 +25,9 @@ The dataset was analyzed using R [@citeR] and downloaded using the R package, Ti
 #| message: false
 library(here)
 library(tidyverse)
+library(ggplot2)
+library(lubridate)
+library(scales)
 options(scipen=999)
 ```
 
@@ -35,10 +38,27 @@ options(scipen=999)
 NIKI  <- readRDS("/Users/jennywei/Desktop/Spotify-Data-Analysis/Explore_Spotify_Data/data/00-raw_data/niki.rds")
 ```
 
+
+## Findings 
+
+The box plot (@duration) illustrates the duration of songs (in milliseconds) from various albums released between 2018 and 2024. Here are some key observations and findings based on the graph
+
+The valence graph (@fig-2) displays the valence of songs released by the artist NIKI from 2020 to 2024. Valence is a measure of the musical positiveness conveyed by a track, with values closer to 1 indicating a more positive sentiment and values closer to 0 indicating a more negative sentiment. Here are the key observations and findings based on the graph:
+
+
+### Box Plot 
+
+The box plots (@duration) reveal changes in song durations over the years, with a notable increase in the median length from 2018 to 2024. In 2018, the median duration was about 200,000 ms, rising significantly by 2022, before stabilizing in 2024. The year 2022 exhibited the greatest variation in song lengths, likely due to shifts in listener preferences and artist experimentation. By 2024, song durations appeared to return to levels similar to 2018, indicating a potential normalization after the variability of 2022.
+
+### Valence Graph 
+
+The graph (@fig-2) indicates an overall increase in valence from 2020 to 2024, suggesting that NIKI's music has become more positively perceived, reflecting her artistic evolution. Starting lower in 2020, valence gradually rises, indicating a positive shift in emotional content. The shaded area around the trend line shows the confidence interval, with greater variability in earlier years, suggesting a wider range of emotional expressions in her songs. Over time, this variability decreases, indicating more consistent emotional themes in her recent work.
+
+
 ```{r}
-#| warning: false
-#| message: false
-#| echo:    false
+#| label: duration
+#| fig-cap: "Relationship Between Duration and Release Date of Songs from NIKI"
+#| echo: false
 NIKI <- as_tibble(NIKI)
 
 NIKI |>
@@ -56,3 +76,43 @@ NIKI |>
     y = "Duration of song (ms)"
   )
 ```
+```{r}
+#| echo:    false
+#| label: fig-2
+#| fig-cap: "Valence with Respect Album Release Date showing valence"
+#| warning: false
+
+NIKI |>
+  select(artist_name, album_release_date, valence) |>
+  mutate(album_release_date = ymd(album_release_date)) |> 
+  ggplot(aes(x = album_release_date, y = valence)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth()+
+  facet_wrap(facets = vars(artist_name), dir = "v") +
+  labs(
+    x = "Album Release Date",
+    y = "Valence",
+    title = "How the valence of Niki's song has evolved from 2019 to 2024."
+  ) +
+  scale_x_date(
+    breaks = seq(from = as.Date("2018-01-01"), to = as.Date("2024-12-31"), by = "1 year"),
+    date_labels = "%Y"
+  ) +
+  coord_cartesian(xlim = c(as.Date("2018-01-01"), as.Date("2024-12-31"))) +
+  scale_color_brewer(palette = "Set1") +
+  theme_classic()+
+  labs(caption = "Valence is a measure between 0 and 1 that signals 'the musical positiveness' of the track; higher values are more positive.") +
+  theme(plot.caption = element_text(hjust = 0))
+
+```
+
+
+#Appendix
+
+## How to Extract 2022 ACS Data from IPUMS
+
+To obtain data from IPUMS, we start by navigating to the IPUMS USA section and clicking on Get Data. Next, we go to the Select Sample section, where we uncheck the "Default sample from each year" option and instead select 2022 ACS. After selecting our sample, we proceed to add variables of interest. For state-level data, we go to Household \> Geographic and add STATEICP to our cart by clicking the plus icon next to it. For individual-level data, we might add variables from the Person section. For example, under Demographic, we could include variables like AGE, and under Person, we could add SEX and EDUCD (education attainment). Once our variables are selected, we click View Cart, then proceed by clicking Create Data Extract. At this point, we review our selections, change the Data Format to CSV, and submit our extract for processing. Then we saved it locally as usa_00002.csv.
+
+\newpage
+
+#References

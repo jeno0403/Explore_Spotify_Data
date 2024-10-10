@@ -1,0 +1,64 @@
+---
+title: "Exploration on NIKI's Music in Spotify"
+subtitle: "Using the Spotify API to "
+author: 
+- Jinyan Wei
+- Maggie Zhang
+- Amy Jin
+- Diana Shen
+- Yiyue Deng
+- Clarie Chang 
+thanks: "Code and data are available at: [https://github.com/jeno0403/Explore_Spotify_Data.git]"
+date: today
+date-format: long
+format: pdf
+bibliography: references.bib
+---
+
+# Data tools
+
+The dataset was analyzed using R [@citeR] and downloaded using the R package, Tidyverse [@citeTidyverse], Knitr [@citeKnitr]. Data are extract from Ipums_usa [@ipumsusa].
+
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+library(here)
+library(tidyverse)
+options(scipen=999)
+```
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+NIKI  <- readRDS(here("data","00-raw_data", "niki.rds"))
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| echo:    false
+NIKI <- as_tibble(NIKI)
+
+NIKI |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (ms)"
+  )
+```
+
+
+
+
+

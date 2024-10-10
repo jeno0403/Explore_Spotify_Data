@@ -1,6 +1,6 @@
 ---
 title: "Exploration on NIKI's Music in Spotify"
-subtitle: "Using the Spotify API to investigate music data "
+subtitle: "Increasing song durations and positive emotional shifts in NIKI's music from 2018 to 2024."
 author: 
 - Jinyan Wei
 - Maggie Zhang
@@ -41,14 +41,14 @@ NIKI  <- readRDS("/Users/jennywei/Desktop/Spotify-Data-Analysis/Explore_Spotify_
 
 ## Findings 
 
-The box plot (@duration) illustrates the duration of songs (in milliseconds) from various albums released between 2018 and 2024. Here are some key observations and findings based on the graph
+The box plot (@fig-duration) illustrates the duration of songs (in milliseconds) from various albums released between 2018 and 2024. Here are some key observations and findings based on the graph
 
 The valence graph (@fig-2) displays the valence of songs released by the artist NIKI from 2020 to 2024. Valence is a measure of the musical positiveness conveyed by a track, with values closer to 1 indicating a more positive sentiment and values closer to 0 indicating a more negative sentiment. Here are the key observations and findings based on the graph:
 
 
 ### Box Plot 
 
-The box plots (@duration) reveal changes in song durations over the years, with a notable increase in the median length from 2018 to 2024. In 2018, the median duration was about 200,000 ms, rising significantly by 2022, before stabilizing in 2024. The year 2022 exhibited the greatest variation in song lengths, likely due to shifts in listener preferences and artist experimentation. By 2024, song durations appeared to return to levels similar to 2018, indicating a potential normalization after the variability of 2022.
+The box plots (@fig-duration) reveal changes in song durations over the years, with a notable increase in the median length from 2018 to 2024. In 2018, the median duration was about 200,000 ms, rising significantly by 2022, before stabilizing in 2024. The year 2022 exhibited the greatest variation in song lengths, likely due to shifts in listener preferences and artist experimentation. By 2024, song durations appeared to return to levels similar to 2018, indicating a potential normalization after the variability of 2022.
 
 ### Valence Graph 
 
@@ -56,7 +56,7 @@ The graph (@fig-2) indicates an overall increase in valence from 2020 to 2024, s
 
 
 ```{r}
-#| label: duration
+#| label: fig-duration
 #| fig-cap: "Relationship Between Duration and Release Date of Songs from NIKI"
 #| echo: false
 NIKI <- as_tibble(NIKI)
@@ -106,13 +106,11 @@ NIKI |>
 
 ```
 
+# Appendix
 
-#Appendix
-
-## How to Extract 2022 ACS Data from IPUMS
-
-To obtain data from IPUMS, we start by navigating to the IPUMS USA section and clicking on Get Data. Next, we go to the Select Sample section, where we uncheck the "Default sample from each year" option and instead select 2022 ACS. After selecting our sample, we proceed to add variables of interest. For state-level data, we go to Household \> Geographic and add STATEICP to our cart by clicking the plus icon next to it. For individual-level data, we might add variables from the Person section. For example, under Demographic, we could include variables like AGE, and under Person, we could add SEX and EDUCD (education attainment). Once our variables are selected, we click View Cart, then proceed by clicking Create Data Extract. At this point, we review our selections, change the Data Format to CSV, and submit our extract for processing. Then we saved it locally as usa_00002.csv.
+## How to Extract Data From Spotify API
+To download data from the Spotify API using R, first create a Spotify Developer Account and accept the Developer Terms of Service. Obtain your "Client ID" and "Client Secret," and store these credentials securely in your system's environment variables by modifying the .Renviron file with the usethis package. After saving the credentials, we install and load the spotifyr package, which serves as a wrapper for the Spotify API. Then retrieve the artist data, and save it for future use. To analyze the data, convert it to a tibble and create visualizations like boxplots to explore trends in song durations over time. Additionally, investigating the "valence" of songs, which measures their emotional positivity, allowing for comparisons across multiple artists to uncover patterns in musical expression.
 
 \newpage
 
-#References
+# References
